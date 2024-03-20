@@ -33,12 +33,12 @@ export type CustomSmartAccount<
     chain extends Chain | undefined = Chain | undefined
 > = SmartAccount<entryPoint, "CustomSmartAccount", transport, chain>
 
-export type SignerToCustomSmartAccountParameters<
+export type CreateCustomSmartAccountParameters<
     entryPoint extends EntryPoint,
     TSource extends string = string,
     TAddress extends Address = Address
 > = Prettify<{
-    signer: SmartAccountSigner<TSource, TAddress>
+    owner: SmartAccountSigner<TSource, TAddress>
     factoryAddress: Address
     entryPoint: entryPoint
     index?: bigint
@@ -50,7 +50,7 @@ export type SignerToCustomSmartAccountParameters<
  *
  * @returns A Private Key Custom Account.
  */
-export async function signerToCustomSmartAccount<
+export async function createCustomSmartAccount<
     entryPoint extends EntryPoint,
     TTransport extends Transport = Transport,
     TChain extends Chain | undefined = Chain | undefined,
@@ -59,15 +59,15 @@ export async function signerToCustomSmartAccount<
 >(
     client: Client<TTransport, TChain, undefined>,
     {
-        signer,
+        owner,
         factoryAddress,
         entryPoint: entryPointAddress,
         index = 0n,
         address
-    }: SignerToCustomSmartAccountParameters<entryPoint, TSource, TAddress>
+    }: CreateCustomSmartAccountParameters<entryPoint, TSource, TAddress>
 ): Promise<CustomSmartAccount<entryPoint, TTransport, TChain>> {
     const viemSigner: LocalAccount = {
-        ...signer,
+        ...owner,
         signTransaction: (_, __) => {
             throw new SignTransactionNotSupportedBySmartAccount()
         }
