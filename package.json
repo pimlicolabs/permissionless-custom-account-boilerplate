@@ -1,0 +1,50 @@
+{
+    "workspaces": ["packages/*"],
+    "private": true,
+    "author": "Pimlico",
+    "type": "module",
+    "sideEffects": false,
+    "devDependencies": {
+        "vitest": "^1.2.0",
+        "@vitest/coverage-v8": "^1.2.0",
+        "@biomejs/biome": "^1.0.0",
+        "@changesets/changelog-git": "^0.1.14",
+        "@changesets/changelog-github": "^0.4.8",
+        "@changesets/cli": "^2.26.2",
+        "@size-limit/esbuild-why": "^9.0.0",
+        "@size-limit/preset-small-lib": "^9.0.0",
+        "bun-types": "^1.0.7",
+        "rimraf": "^5.0.1",
+        "simple-git-hooks": "^2.9.0",
+        "size-limit": "^9.0.0",
+        "tslib": "^2.6.2",
+        "typescript": "^5.2.2"
+    },
+    "description": "",
+    "keywords": [],
+    "license": "MIT",
+    "scripts": {
+        "build": "bun run build:custom-account",
+        "build:custom-account": "bun run clean:custom-account && bun run build:cjs && bun run build:esm && bun run build:types",
+        "build:cjs": "tsc --project ./tsconfig/tsconfig.custom-account.cjs.json && tsc-alias -p ./tsconfig/tsconfig.custom-account.cjs.json && printf '{\"type\":\"commonjs\"}' > ./packages/custom-account/_cjs/package.json",
+        "build:esm": "tsc --project ./tsconfig/tsconfig.custom-account.esm.json && tsc-alias -p ./tsconfig/tsconfig.custom-account.esm.json && printf '{\"type\": \"module\",\"sideEffects\":false}' > ./packages/custom-account/_esm/package.json",
+        "build:types": "tsc --project ./tsconfig/tsconfig.custom-account.types.json && tsc-alias -p ./tsconfig/tsconfig.custom-account.types.json",
+        "clean": "bun run clean:custom-account",
+        "clean:custom-account": "rimraf ./packages/custom-account/_esm ./packages/custom-account/_cjs ./packages/custom-account/_types",
+        "changeset": "changeset",
+        "changeset:release": "bun run build && changeset publish",
+        "changeset:version": "changeset version && bun install --lockfile-only",
+        "format": "biome format . --write",
+        "lint": "biome check .",
+        "lint:fix": "bun run lint --apply",
+        "test": "vitest dev -c ./packages/test/vitest.config.ts",
+        "test:ci": "CI=true vitest -c ./packages/test/vitest.config.ts --coverage"
+    },
+    "simple-git-hooks": {
+        "pre-commit": "bun run format && bun run lint:fix"
+    },
+    "dependencies": {
+        "get-port": "^7.0.0",
+        "tsc-alias": "^1.8.8"
+    }
+}
