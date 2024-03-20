@@ -1,6 +1,6 @@
 import {
-    type CustomSmartAccount,
     type CreateCustomSmartAccountParameters,
+    type CustomSmartAccount,
     createCustomSmartAccount
 } from "./createCustomSmartAccount"
 

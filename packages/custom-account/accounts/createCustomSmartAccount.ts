@@ -66,12 +66,12 @@ export async function createCustomSmartAccount<
         address
     }: CreateCustomSmartAccountParameters<entryPoint, TSource, TAddress>
 ): Promise<CustomSmartAccount<entryPoint, TTransport, TChain>> {
-    const viemSigner: LocalAccount = {
+    const viemSigner: LocalAccount<string> = {
         ...owner,
         signTransaction: (_, __) => {
             throw new SignTransactionNotSupportedBySmartAccount()
         }
-    } as LocalAccount
+    }
 
     const [accountAddress, chainId] = await Promise.all([
         address ??
