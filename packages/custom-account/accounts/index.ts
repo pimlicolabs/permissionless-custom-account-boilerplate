@@ -1,11 +1,11 @@
 import {
     type CustomSmartAccount,
-    type SignerToCustomSmartAccountParameters,
-    signerToCustomSmartAccount
-} from "./signerToCustomAccount"
+    type CreateCustomSmartAccountParameters,
+    createCustomSmartAccount
+} from "./createCustomSmartAccount"
 
 export {
-    type SignerToCustomSmartAccountParameters,
+    type CreateCustomSmartAccountParameters,
     type CustomSmartAccount,
-    signerToCustomSmartAccount
+    createCustomSmartAccount
 }
