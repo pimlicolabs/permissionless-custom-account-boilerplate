@@ -1,1 +1,1 @@
-packages/account-provider-sdk-name/README.md
+packages/custom-account/README.md
