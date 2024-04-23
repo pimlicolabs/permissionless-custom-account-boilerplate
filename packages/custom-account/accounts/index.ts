@@ -1,11 +1,11 @@
 import {
-    type CreateCustomSmartAccountParameters,
-    type CustomSmartAccount,
-    createCustomSmartAccount
-} from "./createCustomSmartAccount"
+  type CreateTrustSmartAccountParameters,
+  type TrustSmartAccount,
+  createTrustSmartAccount,
+} from "./createTrustSmartAccount";
 
 export {
-    type CreateCustomSmartAccountParameters,
-    type CustomSmartAccount,
-    createCustomSmartAccount
-}
+  type CreateTrustSmartAccountParameters,
+  type TrustSmartAccount,
+  createTrustSmartAccount,
+};
