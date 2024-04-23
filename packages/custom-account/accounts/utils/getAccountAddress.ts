@@ -1,4 +1,4 @@
-import { getSenderAddress } from "permissionless/_types/actions"
+import { getSenderAddress } from "permissionless"
 import type {
     ENTRYPOINT_ADDRESS_V06_TYPE,
     EntryPoint
@@ -22,16 +22,19 @@ export const getAccountAddress = async <
         factoryAddress,
         entryPoint: entryPointAddress,
         owner,
+        bytes,
         index = 0n
     }: {
         factoryAddress: Address
         owner: Address
+        bytes: `0x${string}`
         entryPoint: entryPoint
         index?: bigint
     }
 ): Promise<Address> => {
     const factoryData = await getFactoryData({
         account: { address: owner, type: "json-rpc" },
+        bytes,
         index
     })
 

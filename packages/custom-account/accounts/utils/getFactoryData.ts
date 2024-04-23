@@ -1,14 +1,17 @@
 import type { Account } from "viem"
 import { encodeFunctionData } from "viem"
+import { TRUST_ADDRESSES } from "../createTrustSmartAccount"
 
 /**
  * Wrapped this function to minimize the call to check if account is deployed
  */
 export const getFactoryData = async ({
     account,
+    bytes,
     index
 }: {
     account: Account
+    bytes: `0x${string}`
     index: bigint
 }) => {
     if (!account.address) throw new Error("Owner account not found")
@@ -19,20 +22,25 @@ export const getFactoryData = async ({
                 inputs: [
                     {
                         internalType: "address",
-                        name: "owner",
+                        name: "_verificationFacet",
                         type: "address"
                     },
                     {
+                        internalType: "bytes",
+                        name: "_owner",
+                        type: "bytes"
+                    },
+                    {
                         internalType: "uint256",
-                        name: "salt",
+                        name: "_salt",
                         type: "uint256"
                     }
                 ],
                 name: "createAccount",
                 outputs: [
                     {
-                        internalType: "contract CustomAccount",
-                        name: "ret",
+                        internalType: "contract Barz",
+                        name: "barz",
                         type: "address"
                     }
                 ],
@@ -41,6 +49,6 @@ export const getFactoryData = async ({
             }
         ],
         functionName: "createAccount",
-        args: [account.address, index]
+        args: [TRUST_ADDRESSES.Secp256k1VerificationFacetAddress, bytes, index]
     })
 }

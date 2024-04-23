@@ -1,10 +1,8 @@
 import type { EntryPoint } from "permissionless/types"
-import { getEntryPointVersion } from "permissionless/utils"
 import { type Address, type Hex, encodeFunctionData } from "viem"
 
 export const encodeCallData = async ({
-    args,
-    entryPoint
+    args
 }: {
     args:
         | {
@@ -17,7 +15,6 @@ export const encodeCallData = async ({
               value: bigint
               data: `0x${string}`
           }[]
-    entryPoint: EntryPoint
 }) => {
     if (Array.isArray(args)) {
         const argsArray = args as {
@@ -26,32 +23,6 @@ export const encodeCallData = async ({
             data: Hex
         }[]
 
-        if (getEntryPointVersion(entryPoint) === "v0.6") {
-            return encodeFunctionData({
-                abi: [
-                    {
-                        inputs: [
-                            {
-                                internalType: "address[]",
-                                name: "dest",
-                                type: "address[]"
-                            },
-                            {
-                                internalType: "bytes[]",
-                                name: "func",
-                                type: "bytes[]"
-                            }
-                        ],
-                        name: "executeBatch",
-                        outputs: [],
-                        stateMutability: "nonpayable",
-                        type: "function"
-                    }
-                ],
-                functionName: "executeBatch",
-                args: [argsArray.map((a) => a.to), argsArray.map((a) => a.data)]
-            })
-        }
         return encodeFunctionData({
             abi: [
                 {

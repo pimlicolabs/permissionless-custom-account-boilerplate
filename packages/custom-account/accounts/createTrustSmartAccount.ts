@@ -27,13 +27,23 @@ import { signTransaction } from "./utils/signTransaction"
 import { signTypedData } from "./utils/signTypedData"
 import { signUserOperation } from "./utils/signUserOperation"
 
-export type CustomSmartAccount<
+/**
+ * Default addresses for Trust Smart Account
+ */
+export const TRUST_ADDRESSES: {
+    Secp256k1VerificationFacetAddress: Address
+} = {
+    Secp256k1VerificationFacetAddress:
+        "0x03F82FA254B123282542Efc2b477f30ADD2Ca111"
+}
+
+export type TrustSmartAccount<
     entryPoint extends EntryPoint,
     transport extends Transport = Transport,
     chain extends Chain | undefined = Chain | undefined
-> = SmartAccount<entryPoint, "CustomSmartAccount", transport, chain>
+> = SmartAccount<entryPoint, "TrustSmartAccount", transport, chain>
 
-export type CreateCustomSmartAccountParameters<
+export type CreateTrustSmartAccountParameters<
     entryPoint extends EntryPoint,
     TSource extends string = string,
     TAddress extends Address = Address
@@ -46,11 +56,11 @@ export type CreateCustomSmartAccountParameters<
 }>
 
 /**
- * @description Creates an Custom Account from a private key.
+ * @description Creates an Trust Smart Account from a private key.
  *
- * @returns A Private Key Custom Account.
+ * @returns A Private Key Trust Smart Account.
  */
-export async function createCustomSmartAccount<
+export async function createTrustSmartAccount<
     entryPoint extends EntryPoint,
     TTransport extends Transport = Transport,
     TChain extends Chain | undefined = Chain | undefined,
@@ -64,8 +74,8 @@ export async function createCustomSmartAccount<
         entryPoint: entryPointAddress,
         index = 0n,
         address
-    }: CreateCustomSmartAccountParameters<entryPoint, TSource, TAddress>
-): Promise<CustomSmartAccount<entryPoint, TTransport, TChain>> {
+    }: CreateTrustSmartAccountParameters<entryPoint, TSource, TAddress>
+): Promise<TrustSmartAccount<entryPoint, TTransport, TChain>> {
     const viemSigner: LocalAccount<string> = {
         ...owner,
         signTransaction: (_, __) => {
@@ -78,6 +88,7 @@ export async function createCustomSmartAccount<
             getAccountAddress(client, {
                 factoryAddress,
                 entryPoint: entryPointAddress,
+                bytes: viemSigner.publicKey,
                 owner: viemSigner.address,
                 index
             }),
@@ -96,7 +107,7 @@ export async function createCustomSmartAccount<
         client: client,
         publicKey: accountAddress,
         entryPoint: entryPointAddress,
-        source: "CustomSmartAccount",
+        source: "TrustSmartAccount",
 
         signMessage: ({ message }) =>
             signMessage(client, { account: viemSigner, message }),
@@ -140,6 +151,7 @@ export async function createCustomSmartAccount<
                 factoryAddress,
                 await getFactoryData({
                     account: viemSigner,
+                    bytes: viemSigner.publicKey,
                     index
                 })
             ])
@@ -162,14 +174,15 @@ export async function createCustomSmartAccount<
 
             return getFactoryData({
                 account: viemSigner,
+                bytes: viemSigner.publicKey,
                 index
             })
         },
         async encodeDeployCallData(_) {
-            throw new Error("Custom account doesn't support account deployment")
+            throw new Error("Trust account doesn't support account deployment")
         },
         async encodeCallData(args) {
-            return encodeCallData({ args, entryPoint: entryPointAddress })
+            return encodeCallData({ args })
         },
         async getDummySignature(userOperation) {
             return getDummySignature(userOperation)
