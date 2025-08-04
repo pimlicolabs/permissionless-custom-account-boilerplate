@@ -1,5 +1,11 @@
 <p align="center"><a href="https://docs.pimlico/permissionless"><img width="1000" title="Permissionless" src='https://raw.githubusercontent.com/pimlicolabs/permissionless.js/main/assets/banner.png' /></a></p>
 
+> [!NOTE]
+> This repo is using a outdated version of permissionless.js. At the time of writing, it is recommended to use permissionless.js@^0.2.52, if you need any help migrating, please reach out to the Pimlico team.
+
+> [!TIP]
+> Checkout Viem's guide on the `toSmartAccount` function to define a custom account implementation https://viem.sh/account-abstraction/accounts/smart/toSmartAccount
+
 # Permissionless.js Account Boilerplate Code
 
 ![Node Version](https://img.shields.io/badge/node-20.x-green)
